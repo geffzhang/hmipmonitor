@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using HmIpMonitor.Logic;
 using HmIpMonitor.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,6 +41,8 @@ namespace HmIpMonitor
             }
 
             new HmIpMonitorContext().Database.Migrate();
+
+            CcuUpdateService.Run();
 
             app.UseRouting();
 

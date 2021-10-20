@@ -73,11 +73,12 @@ namespace HmIpMonitor.Logic
                     {
                         ccuData.Id = d.Id;
                         ccuData.Name = GetDeviceData(d.Id)?.Title;
+                        ccuData.DeviceParameterId = dp.Id;
                     }
 
                     return ccuData;
                 });
-            }).ToList();
+            }).Where(x => x != null).ToList();
         }
 
         //public void AddDataPoint(string deviceId, string value)
