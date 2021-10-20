@@ -2,15 +2,17 @@
 using HmIpMonitor.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HmIpMonitor.Migrations
 {
     [DbContext(typeof(HmIpMonitorContext))]
-    partial class HmIpMonitorContextModelSnapshot : ModelSnapshot
+    [Migration("20211020054647_AddThresholds")]
+    partial class AddThresholds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,9 +67,6 @@ namespace HmIpMonitor.Migrations
 
                     b.Property<double>("ValueErrorThreshold")
                         .HasColumnType("double precision");
-
-                    b.Property<bool>("ValueThresholdDirectionRight")
-                        .HasColumnType("boolean");
 
                     b.Property<double>("ValueWarnThreshold")
                         .HasColumnType("double precision");

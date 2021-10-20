@@ -35,7 +35,17 @@ namespace HmIpMonitor.Logic
                 dbParameter.Channel = device.Channel;
                 dbParameter.DeviceId = dbDevice.Id;
                 dbParameter.Parameter = device.Parameter;
+                dbParameter.ValueErrorThreshold = device.ValueErrorThreshold;
+                dbParameter.ValueWarnThreshold = device.ValueWarnThreshold;
+                dbParameter.ValueThresholdDirectionRight = device.ValueThresholdDirectionRight;
                 ctx.DeviceParameters.Add(dbParameter);
+                ctx.SaveChanges();
+            }
+            else
+            {
+                dbParameter.ValueErrorThreshold = device.ValueErrorThreshold;
+                dbParameter.ValueWarnThreshold = device.ValueWarnThreshold;
+                dbParameter.ValueThresholdDirectionRight = device.ValueThresholdDirectionRight;
                 ctx.SaveChanges();
             }
             
