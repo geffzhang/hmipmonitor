@@ -1,0 +1,5 @@
+/.vs
+/HmIpMonitor/bin
+/HmIpMonitor/obj
+/HmIpMonitor/*.user
+/HmIpMonitor.sln.DotSettings.user
