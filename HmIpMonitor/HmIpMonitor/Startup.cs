@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HmIpMonitor.EntityFramework;
+using HmIpMonitor.Logic;
 using Microsoft.EntityFrameworkCore;
 using Samhammer.DependencyInjection;
 
@@ -60,6 +57,8 @@ namespace HmIpMonitor
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            CcuUpdateService.Run(app.ApplicationServices);
         }
     }
 }

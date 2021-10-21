@@ -6,6 +6,7 @@ namespace HmIpMonitor.EntityFramework
     public class HmIpMonitorContext : DbContext
     {
         public HmIpMonitorContext(DbContextOptions<HmIpMonitorContext> options): base(options){}
+        public HmIpMonitorContext(){}
 
         public DbSet<HmIpDevice> Devices { get; set; }
         public DbSet<DeviceParameter> DeviceParameters { get; set; }
