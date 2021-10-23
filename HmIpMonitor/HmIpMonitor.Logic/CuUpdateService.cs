@@ -49,8 +49,7 @@ namespace HmIpMonitor.Logic
         public void Execute()
         {
             var deviceData = _deviceLogic.GetAllValues();
-
-            using var ctx = new HmIpMonitorContext();
+            
             deviceData.ForEach(d =>
             {
                 if (oldTimestampCache.TryGetValue(d.DeviceParameterId, out var oldTs) && oldTs == d.Ts)
@@ -58,7 +57,7 @@ namespace HmIpMonitor.Logic
                     // only update bigger changes
                     return;
                 }
-                ctx.DataPoints.Add(new CcuDataPoint
+                _context.DataPoints.Add(new CcuDataPoint
                 {
                     DeviceParameterId = d.DeviceParameterId,
                     Quality = d.S,
@@ -67,7 +66,7 @@ namespace HmIpMonitor.Logic
                 });
                 oldTimestampCache[d.DeviceParameterId] = d.Ts;
             });
-            ctx.SaveChanges();
+            _context.SaveChanges();
         }
     }
 }

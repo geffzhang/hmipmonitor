@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HmIpMonitor.Models
 {
     [Table("DataPoint")]
     public class CcuDataPoint
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public virtual DeviceParameter DeviceParameter { get; set; }
         public long DeviceParameterId { get; set; }

@@ -14,57 +14,59 @@ namespace HmIpMonitor.Logic
     public class DeviceLogic : IDeviceLogic
     {
         private readonly ICcuApi _ccuApi;
+        private readonly HmIpMonitorContext ctx;
 
         private static ConcurrentDictionary<string, CcuDeviceDto> deviceCache =
             new();
 
-        public DeviceLogic(ICcuApi ccuApi)
+        public DeviceLogic(ICcuApi ccuApi, HmIpMonitorContext ctx)
         {
             _ccuApi = ccuApi;
+            this.ctx = ctx;
         }
 
-        public HmIpDevice SaveOrUpdateDevice(ClientDeviceModel device)
+        public HmIpDevice SaveOrUpdateDevice(DeviceParameter parameter)
         {
-            using var ctx = new HmIpMonitorContext();
-            var dbDevice = ctx.Devices.FirstOrDefault(x => x.Id == device.Id);
+            var dbDevice = ctx.Devices.FirstOrDefault(x => x.Id == parameter.DeviceId);
 
             if (dbDevice == null)
             {
                 dbDevice = new HmIpDevice();
-                dbDevice.Id = device.Id;
+                dbDevice.Id = parameter.DeviceId;
                 ctx.Devices.Add(dbDevice);
                 ctx.SaveChanges();
             }
 
             var dbParameter =
-                ctx.DeviceParameters.FirstOrDefault(x => x.DeviceId == device.Id && x.Parameter == device.Parameter && x.Channel == device.Channel);
+                ctx.DeviceParameters.FirstOrDefault(x => x.DeviceId == parameter.DeviceId && x.Parameter == parameter.Parameter && x.Channel == parameter.Channel);
 
             if (dbParameter == null)
             {
                 dbParameter = new DeviceParameter();
-                dbParameter.Channel = device.Channel;
+                dbParameter.Channel = parameter.Channel;
                 dbParameter.DeviceId = dbDevice.Id;
-                dbParameter.Parameter = device.Parameter;
-                dbParameter.ValueErrorThreshold = device.ValueErrorThreshold;
-                dbParameter.ValueWarnThreshold = device.ValueWarnThreshold;
-                dbParameter.ValueThresholdDirectionRight = device.ValueThresholdDirectionRight;
+                dbParameter.Parameter = parameter.Parameter;
+                dbParameter.ValueErrorThreshold = parameter.ValueErrorThreshold;
+                dbParameter.ValueWarnThreshold = parameter.ValueWarnThreshold;
+                dbParameter.ValueThresholdDirectionRight = parameter.ValueThresholdDirectionRight;
                 ctx.DeviceParameters.Add(dbParameter);
                 ctx.SaveChanges();
             }
             else
             {
-                dbParameter.ValueErrorThreshold = device.ValueErrorThreshold;
-                dbParameter.ValueWarnThreshold = device.ValueWarnThreshold;
-                dbParameter.ValueThresholdDirectionRight = device.ValueThresholdDirectionRight;
+                dbParameter.ValueErrorThreshold = parameter.ValueErrorThreshold;
+                dbParameter.ValueWarnThreshold = parameter.ValueWarnThreshold;
+                dbParameter.ValueThresholdDirectionRight = parameter.ValueThresholdDirectionRight;
                 ctx.SaveChanges();
             }
+
+            InitDeviceCache();
             
-            return ctx.Devices.Include(x => x.DeviceParameter).FirstOrDefault(x => x.Id == device.Id);
+            return ctx.Devices.Include(x => x.DeviceParameter).FirstOrDefault(x => x.Id == parameter.DeviceId);
         }
 
         public List<HmIpDevice> GetAll()
         {
-            using var ctx = new HmIpMonitorContext();
             return ctx.Devices.Include(x => x.DeviceParameter).ToList();
         }
 
@@ -93,7 +95,7 @@ namespace HmIpMonitor.Logic
 
         //public void AddDataPoint(string deviceId, string value)
 
-        private void InitDeviceCache(List<string> deviceIds)
+        private void InitDeviceCache(List<string> deviceIds = null)
         {
             // concurrentdict is used though we use lock() here because dotnet-dump can show contents of concurrent dict easily
 
@@ -105,6 +107,10 @@ namespace HmIpMonitor.Logic
                 }
 
                 deviceCache.Clear();
+                if (deviceIds == null)
+                {
+                    deviceIds = GetAll().Select(x => x.Id).ToList();
+                }
 
                 var ccuApi = new CcuApi();
                 deviceIds.ForEach(d =>

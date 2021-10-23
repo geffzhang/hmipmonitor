@@ -6,7 +6,7 @@ namespace HmIpMonitor.Logic
 {
     public interface IDeviceLogic
     {
-        HmIpDevice SaveOrUpdateDevice(ClientDeviceModel device);
+        HmIpDevice SaveOrUpdateDevice(DeviceParameter parameter);
         List<HmIpDevice> GetAll();
         List<CcuValueDto> GetAllValues();
         CcuDeviceDto GetDeviceData(string deviceId);

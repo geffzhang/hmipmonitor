@@ -1,0 +1,28 @@
+﻿@model IEnumerable<DeviceIndexModel>
+@{
+    ViewData["Title"] = "Alle Geräteparameter";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <p>@Html.ActionLink("Create New", "Create")</p>
+    <tr><th>Gerät</th><th>Channel</th><th>Parameter</th><th>Thresholds (E/W/Direction right)</th><th>Actions</th></tr>
+    @foreach (var d in Model)
+    {
+        <tr><td>@d.Title</td><td></td><td></td><td></td></tr>
+        @foreach (var dp in d.DeviceParameter)
+        {
+            <tr>
+                <td></td>
+                <td>@dp.Channel</td>
+                <td>@dp.Parameter</td>
+                <td>@dp.ValueErrorThreshold / @dp.ValueWarnThreshold / @dp.ValueThresholdDirectionRight</td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new {id = dp.Id}) |
+                    @Html.ActionLink("Edit", "Edit", new {id = dp.Id})
+                </td>
+            </tr>
+        }
+    }
+</table>

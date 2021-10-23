@@ -7,6 +7,8 @@ namespace HmIpMonitor.Models
     [Table("DeviceParameter")]
     public class DeviceParameter
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public virtual HmIpDevice Device { get; set; }
         [MaxLength(255)]
