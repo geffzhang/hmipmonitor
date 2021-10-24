@@ -10,6 +10,7 @@ namespace HmIpMonitor.EntityFramework.Models
         [MaxLength(255)]
         public string Title { get; set; }
 
-        public virtual List<DashboardDeviceParameter> DashboardDeviceParameters { get; set; }
+        public virtual List<DashboardDeviceParameter> DashboardDeviceParameters { get; set; } =
+            new List<DashboardDeviceParameter>();
     }
 }

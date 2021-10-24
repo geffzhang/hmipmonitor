@@ -125,7 +125,7 @@ namespace HmIpMonitor.Logic
         {
             lock (deviceCache)
             {
-                var data = deviceCache[deviceId];
+                var data = deviceCache.TryGetValue(deviceId, out var fromCache) ? fromCache : null;
                 if (data == null)
                 {
                     InitDeviceCache(null);

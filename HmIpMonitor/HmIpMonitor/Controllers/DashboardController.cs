@@ -5,16 +5,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using HmIpMonitor.Logic;
 using HmIpMonitor.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace HmIpMonitor.Controllers
 {
     public class DashboardController : Controller
     {
         private readonly IDeviceLogic _deviceLogic;
+        private readonly IDashboardLogic _dashboardLogic;
 
-        public DashboardController(IDeviceLogic deviceLogic)
+        public DashboardController(IDeviceLogic deviceLogic, IDashboardLogic dashboardLogic)
         {
             _deviceLogic = deviceLogic;
+            _dashboardLogic = dashboardLogic;
         }
 
         public IActionResult Index()
@@ -24,6 +27,18 @@ namespace HmIpMonitor.Controllers
 
         [HttpGet]
         public IActionResult Create()
+        {
+            return View(GetDashboardModel());
+        }
+
+        [HttpPost]
+        public IActionResult Create(CreateEditDashboardModel model)
+        {
+            _dashboardLogic.SaveOrUpdate(model.Id, model.Title, model.DeviceParameters.Select(x => x.Id).ToList());
+            return View(GetDashboardModel());
+        }
+
+        private CreateEditDashboardModel GetDashboardModel()
         {
             var dashboard = new CreateEditDashboardModel();
 
@@ -43,8 +58,7 @@ namespace HmIpMonitor.Controllers
             }).ToList();
 
             dashboard.DeviceParameters = parameters;
-
-            return View(dashboard);
+            return dashboard;
         }
     }
 }
