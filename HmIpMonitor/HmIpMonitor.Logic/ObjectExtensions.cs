@@ -5,14 +5,20 @@ namespace HmIpMonitor.Logic
 {
     public static class ObjectExtensions
     {
-        public static T PopulateFrom<T>(this T @this, T from)
+        public static TOut PopulateFrom<TOut, TIn>(this TOut @this, TIn from)
         {
-            var type = @this.GetType();
-            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty |
-                               BindingFlags.GetProperty);
+            var properties = @this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty |
+                                                           BindingFlags.GetProperty);
+            var fromProperties = from.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty |
+                                                              BindingFlags.GetProperty);
             properties.ToList().ForEach(p =>
             {
-                p.SetValue(@this, p.GetValue(from));
+                var fromProperty = fromProperties.FirstOrDefault(x => x.Name == p.Name);
+                if (fromProperty == null)
+                {
+                    return;
+                }
+                p.SetValue(@this, fromProperty.GetValue(from));
             });
 
             return @this;

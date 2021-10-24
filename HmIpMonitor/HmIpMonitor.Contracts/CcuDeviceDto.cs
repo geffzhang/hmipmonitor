@@ -1,9 +1,9 @@
-﻿namespace HmIpMonitor.Contracts
+﻿using HmIpMonitor.Contracts.CcuApi;
+
+namespace HmIpMonitor.Contracts
 {
-    public class CcuDeviceDto
+    public class CcuDeviceDto : CcuDevice
     {
-        public string Title { get; set; }
-        public string Address { get; set; }
         public string Id => Address;
     }
 }

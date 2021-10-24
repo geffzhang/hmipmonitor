@@ -1,10 +1,11 @@
 ﻿using HmIpMonitor.Contracts;
+using HmIpMonitor.Contracts.CcuApi;
 
 namespace HmIpMonitor.Logic
 {
     public interface ICcuApi
     {
-        CcuValueDto GetDataFor(string deviceId, string channel, string parameter);
-        CcuDeviceDto GetDeviceDataFor(string deviceId);
+        CcuValue GetDataFor(string deviceId, string channel, string parameter);
+        CcuDevice GetDeviceDataFor(string deviceId);
     }
 }

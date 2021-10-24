@@ -13,7 +13,7 @@ namespace HmIpMonitor.Logic
     [Inject()]
     public class DeviceLogic : IDeviceLogic
     {
-        private readonly ICcuApi _ccuApi;
+        private readonly ICcuApi ccuApi;
         private readonly HmIpMonitorContext ctx;
 
         private static ConcurrentDictionary<string, CcuDeviceDto> deviceCache =
@@ -21,7 +21,7 @@ namespace HmIpMonitor.Logic
 
         public DeviceLogic(ICcuApi ccuApi, HmIpMonitorContext ctx)
         {
-            _ccuApi = ccuApi;
+            this.ccuApi = ccuApi;
             this.ctx = ctx;
         }
 
@@ -74,7 +74,6 @@ namespace HmIpMonitor.Logic
         {
             var devices = GetAll();
             InitDeviceCache(devices.Select(x => x.Id).ToList());
-            var ccuApi = new CcuApi();
             return devices.SelectMany(d =>
             {
                 return d.DeviceParameter.Select(dp =>
@@ -83,12 +82,15 @@ namespace HmIpMonitor.Logic
 
                     if (ccuData != null)
                     {
-                        ccuData.Id = d.Id;
-                        ccuData.Name = GetDeviceData(d.Id)?.Title;
-                        ccuData.DeviceParameterId = dp.Id;
+                        var retVal = new CcuValueDto();
+                        retVal.PopulateFrom(ccuData);
+                        retVal.DeviceId = d.Id;
+                        retVal.DeviceName = GetDeviceData(d.Id)?.Title;
+                        retVal.DeviceParameterId = dp.Id;
+                        retVal.ParameterName = dp.Parameter;
                     }
 
-                    return ccuData;
+                    return null as CcuValueDto;
                 });
             }).Where(x => x != null).ToList();
         }
@@ -111,12 +113,11 @@ namespace HmIpMonitor.Logic
                 {
                     deviceIds = GetAll().Select(x => x.Id).ToList();
                 }
-
-                var ccuApi = new CcuApi();
+                
                 deviceIds.ForEach(d =>
                 {
                     var ccuData = ccuApi.GetDeviceDataFor(d);
-                    deviceCache[d] = ccuData ?? new CcuDeviceDto { Title = "unknown" };
+                    deviceCache[d] = ccuData != null ? new CcuDeviceDto().PopulateFrom(ccuData) : new CcuDeviceDto { Title = "unknown" };
                 });
             }
         }

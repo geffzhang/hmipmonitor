@@ -1,14 +1,12 @@
-﻿namespace HmIpMonitor.Contracts
-{
-    public class CcuValueDto
-    {
-        public long Ts { get; set; }
-        public double V { get; set; }
-        public double S { get; set; }
+﻿using HmIpMonitor.Contracts.CcuApi;
 
-        // transient
-        public string Id { get; set; }
-        public string Name { get; set; }
+namespace HmIpMonitor.Contracts
+{
+    public class CcuValueDto : CcuValue
+    {
+        public string DeviceId { get; set; }
+        public string DeviceName { get; set; }
+        public string ParameterName { get; set; }
         public long DeviceParameterId { get; set; }
     }
 }
