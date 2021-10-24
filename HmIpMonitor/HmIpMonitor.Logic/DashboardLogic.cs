@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using HmIpMonitor.EntityFramework;
 using HmIpMonitor.EntityFramework.Models;
 using Samhammer.DependencyInjection.Attributes;
@@ -44,6 +45,22 @@ namespace HmIpMonitor.Logic
 
             _context.SaveChanges();
             return _context.Dashboards.First(x => x.Id == dashboard.Id);
+        }
+
+        public List<Dashboard> LoadAll()
+        {
+            return _context.Dashboards.ToList();
+        }
+
+        public void Delete(long id)
+        {
+            _context.Dashboards.Remove(_context.Dashboards.First(x => x.Id == id));
+            _context.SaveChanges();
+        }
+
+        public Dashboard Load(long id)
+        {
+            return _context.Dashboards.First(x => x.Id == id);
         }
     }
 }

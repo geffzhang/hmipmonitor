@@ -1,7 +1,18 @@
-﻿@{
+﻿@model IEnumerable<HmIpMonitor.EntityFramework.Models.Dashboard>
+@{
     ViewData["Title"] = "Dashboard";
 }
 
 <h1>@ViewData["Title"]</h1>
 
 <p>@Html.ActionLink("Create New", "Create")</p>
+
+<table class="table">
+    <tr><th>Titel</th><th>#Parameters</th><th>Actions</th></tr>
+    @foreach (var d in Model)
+    {
+        <tr>
+            <td>@d.Title</td><td>@d.DashboardDeviceParameters.Count</td><td>@Html.ActionLink("Delete", "Delete", new { d.Id }) | @Html.ActionLink("Edit", "Edit", new { d.Id })</td>
+        </tr>
+    }
+</table>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HmIpMonitor.EntityFramework.Models;
 using HmIpMonitor.Logic;
 using HmIpMonitor.Models;
 using Microsoft.AspNetCore.Http;
@@ -22,25 +23,46 @@ namespace HmIpMonitor.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(_dashboardLogic.LoadAll());
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Create(long id = 0)
         {
-            return View(GetDashboardModel());
+            return View(GetDashboardModel(id));
         }
 
         [HttpPost]
         public IActionResult Create(CreateEditDashboardModel model)
         {
-            _dashboardLogic.SaveOrUpdate(model.Id, model.Title, model.DeviceParameters.Select(x => x.Id).ToList());
-            return View(GetDashboardModel());
+            _dashboardLogic.SaveOrUpdate(model.Id, model.Title, model.DeviceParameters.Where(x => x.Active).Select(x => x.Id).ToList());
+            return RedirectToAction("Index");
         }
 
-        private CreateEditDashboardModel GetDashboardModel()
+        [HttpGet]
+        public IActionResult Delete(long id)
         {
-            var dashboard = new CreateEditDashboardModel();
+            _dashboardLogic.Delete(id);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(long id)
+        {
+            return RedirectToAction("Create", new { Id = id });
+        }
+
+        private CreateEditDashboardModel GetDashboardModel(long id = 0)
+        {
+            CreateEditDashboardModel dashboard = new();
+            Dashboard dbDashboard = null;
+
+            if (id > 0)
+            {
+                dashboard.Id = id;
+                dbDashboard = _dashboardLogic.Load(id);
+                dashboard.Title = dbDashboard.Title;
+            }
 
             var parameters = _deviceLogic.GetAll().SelectMany(d =>
             {
@@ -51,7 +73,7 @@ namespace HmIpMonitor.Controllers
                     {
                         Title = deviceName,
                         Parameter = dp.Parameter,
-                        Active = false,
+                        Active = dbDashboard?.DashboardDeviceParameters.Any(x => x.DeviceParameterId == dp.Id) ?? false,
                         Id = dp.Id
                     };
                 });
