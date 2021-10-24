@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HmIpMonitor.EntityFramework.Models;
 
 namespace HmIpMonitor.Models
 {

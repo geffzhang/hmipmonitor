@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using HmIpMonitor.Contracts;
+using HmIpMonitor.EntityFramework.Models;
 using HmIpMonitor.Logic;
 using HmIpMonitor.Models;
 using Microsoft.AspNetCore.Http;

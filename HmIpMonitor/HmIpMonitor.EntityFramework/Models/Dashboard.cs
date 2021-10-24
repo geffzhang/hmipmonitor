@@ -4,13 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HmIpMonitor.EntityFramework.Models
 {
-    [Table("HmIpDevice")]
-    public class HmIpDevice
+    [Table("Dashboard")]
+    public class Dashboard : BaseEntity
     {
         [MaxLength(255)]
-        [Key]
-        public string Id { get; set; }
+        public string Title { get; set; }
 
-        public virtual List<DeviceParameter> DeviceParameter { get; set; }
+        public virtual List<DashboardDeviceParameter> DashboardDeviceParameters { get; set; }
     }
 }

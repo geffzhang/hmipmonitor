@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using HmIpMonitor.Contracts;
-using HmIpMonitor.Models;
+using HmIpMonitor.EntityFramework.Models;
 
 namespace HmIpMonitor.Logic
 {

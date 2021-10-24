@@ -1,0 +1,37 @@
+﻿@model CreateEditDashboardModel
+@{
+    ViewData["Title"] = "Create Dashboard";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@using (Html.BeginForm())
+{
+<div class="form-horizontal">
+    <h4>Dashboard Basisdaten</h4>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Title, new { @class = "control-label col-md-2" })
+
+        <div class="col-md-10">
+            @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    <hr />
+    
+    <div class="parameters-selection">
+        @for (var pIndex = 0; pIndex < Model.DeviceParameters.Count; pIndex++)
+        {
+            <div class="device-group">
+                <div>@Model.DeviceParameters[pIndex].Title</div>
+                <div>@Model.DeviceParameters[pIndex].Parameter</div>
+                <div>@Html.CheckBoxFor(x => x.DeviceParameters[pIndex].Active)</div>
+            </div>
+        }
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}

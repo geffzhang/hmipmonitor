@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using HmIpMonitor.EntityFramework;
-using HmIpMonitor.Models;
+using HmIpMonitor.EntityFramework.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Samhammer.DependencyInjection.Attributes;
 

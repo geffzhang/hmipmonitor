@@ -5,8 +5,9 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<p>@Html.ActionLink("Create New", "Create")</p>
+
 <table class="table">
-    <p>@Html.ActionLink("Create New", "Create")</p>
     <tr><th>Gerät</th><th>Channel</th><th>Parameter</th><th>Thresholds (E/W/Direction right)</th><th>Actions</th></tr>
     @foreach (var d in Model)
     {

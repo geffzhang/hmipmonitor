@@ -2,14 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HmIpMonitor.Models
+namespace HmIpMonitor.EntityFramework.Models
 {
     [Table("DeviceParameter")]
-    public class DeviceParameter
+    public class DeviceParameter : BaseEntity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
         public virtual HmIpDevice Device { get; set; }
         [MaxLength(255)]
         public string DeviceId { get; set; }
