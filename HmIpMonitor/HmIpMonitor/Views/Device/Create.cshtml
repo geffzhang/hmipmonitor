@@ -1,4 +1,4 @@
-﻿@model HmIpMonitor.EntityFramework.Models.DeviceParameter
+﻿@model CreateDeviceParameterModel
 
 @{
     ViewData["Title"] = "Neuer Eintrag";
@@ -9,12 +9,13 @@
 @using (Html.BeginForm())
 {
     <div class = "form-horizontal">
-        <h4>Geräteparameter:</h4>
+        <h4>Geräteparameter (@Model.DeviceName):</h4>
         <hr />
 
         <div class="form-group">
+            @Html.HiddenFor(x => x.Id)
             @Html.LabelFor(model => model.DeviceId, htmlAttributes:
-                new{ @class = "control-label col-md-2" })
+                new {@class = "control-label col-md-2"})
 
             <div class="col-md-10">
                 @Html.EditorFor(model => model.DeviceId, new

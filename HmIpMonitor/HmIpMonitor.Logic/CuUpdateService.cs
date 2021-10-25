@@ -52,19 +52,19 @@ namespace HmIpMonitor.Logic
             
             deviceData.ForEach(d =>
             {
-                if (oldTimestampCache.TryGetValue(d.DeviceParameterId, out var oldTs) && oldTs == d.Ts)
+                if (oldTimestampCache.TryGetValue(d.DeviceParameter.Id, out var oldTs) && oldTs == d.Ts)
                 {
                     // only update bigger changes
                     return;
                 }
                 _context.DataPoints.Add(new CcuDataPoint
                 {
-                    DeviceParameterId = d.DeviceParameterId,
+                    DeviceParameterId = d.DeviceParameter.Id,
                     Quality = d.S,
                     Timestamp = d.Ts,
                     Value = d.V
                 });
-                oldTimestampCache[d.DeviceParameterId] = d.Ts;
+                oldTimestampCache[d.DeviceParameter.Id] = d.Ts;
             });
             _context.SaveChanges();
         }

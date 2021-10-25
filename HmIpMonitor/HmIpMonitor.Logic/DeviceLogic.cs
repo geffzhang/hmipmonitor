@@ -65,6 +65,12 @@ namespace HmIpMonitor.Logic
             return ctx.Devices.Include(x => x.DeviceParameter).FirstOrDefault(x => x.Id == parameter.DeviceId);
         }
 
+        public HmIpDevice LoadById(long id)
+        {
+            return null;
+            //   return ctx.Devices.Include(x => x.DeviceParameter).First(x => x.Id == id);
+        }
+
         public List<HmIpDevice> GetAll()
         {
             return ctx.Devices.Include(x => x.DeviceParameter).ToList();
@@ -85,14 +91,18 @@ namespace HmIpMonitor.Logic
                         retVal.PopulateFrom(ccuData);
                         retVal.DeviceId = d.Id;
                         retVal.DeviceName = GetDeviceData(d.Id)?.Title;
-                        retVal.DeviceParameterId = dp.Id;
-                        retVal.ParameterName = dp.Parameter;
+                        retVal.DeviceParameter = dp;
                         return retVal;
                     }
 
                     return null as CcuValueDto;
                 });
             }).Where(x => x != null).ToList();
+        }
+
+        public DeviceParameter GetDeviceParameter(int id)
+        {
+            return ctx.DeviceParameters.FirstOrDefault(x => x.Id == id);
         }
 
         public List<CcuValueDto> GetAllValues()
@@ -111,8 +121,7 @@ namespace HmIpMonitor.Logic
                         retVal.PopulateFrom(ccuData);
                         retVal.DeviceId = d.Id;
                         retVal.DeviceName = GetDeviceData(d.Id)?.Title;
-                        retVal.DeviceParameterId = dp.Id;
-                        retVal.ParameterName = dp.Parameter;
+                        retVal.DeviceParameter = dp;
                     }
 
                     return null as CcuValueDto;

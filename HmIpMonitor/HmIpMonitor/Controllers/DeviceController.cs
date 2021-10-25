@@ -29,7 +29,7 @@ namespace HmIpMonitor.Controllers
                 return new DeviceIndexModel
                 {
                     Address = deviceData.Address,
-                    DeviceParameter = d.DeviceParameter,
+                    DeviceParameter = d.DeviceParameter.OrderBy(x => x.Parameter).ToList(),
                     Title = deviceData.Title
                 };
             });
@@ -37,9 +37,13 @@ namespace HmIpMonitor.Controllers
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(int id = 0)
         {
-            return View();
+            DeviceParameter dp = _deviceLogic.GetDeviceParameter(id);
+            var deviceData = _deviceLogic.GetDeviceData(dp.DeviceId);
+            var model = new CreateDeviceParameterModel().PopulateFrom(dp);
+            model.DeviceName = deviceData.Title;
+            return View(model);
         }
 
         [HttpPost]

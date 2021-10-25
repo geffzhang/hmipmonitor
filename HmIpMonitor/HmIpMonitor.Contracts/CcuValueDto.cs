@@ -1,4 +1,5 @@
 ﻿using HmIpMonitor.Contracts.CcuApi;
+using HmIpMonitor.EntityFramework.Models;
 
 namespace HmIpMonitor.Contracts
 {
@@ -6,7 +7,7 @@ namespace HmIpMonitor.Contracts
     {
         public string DeviceId { get; set; }
         public string DeviceName { get; set; }
-        public string ParameterName { get; set; }
-        public long DeviceParameterId { get; set; }
+
+        public DeviceParameter DeviceParameter { get; set; }
     }
 }

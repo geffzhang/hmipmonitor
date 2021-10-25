@@ -11,5 +11,6 @@ namespace HmIpMonitor.Logic
         List<CcuValueDto> GetAllValues();
         CcuDeviceDto GetDeviceData(string deviceId);
         List<CcuValueDto> LoadValues(List<string> deviceIds, List<long> parameterIds);
+        DeviceParameter GetDeviceParameter(int id);
     }
 }
