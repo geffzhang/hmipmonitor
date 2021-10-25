@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using HmIpMonitor.Contracts;
 using HmIpMonitor.EntityFramework;
 using HmIpMonitor.EntityFramework.Models;
 using Samhammer.DependencyInjection.Attributes;
@@ -11,10 +12,12 @@ namespace HmIpMonitor.Logic
     public class DashboardLogic : IDashboardLogic
     {
         private readonly HmIpMonitorContext _context;
+        private readonly IDeviceLogic _deviceLogic;
 
-        public DashboardLogic(HmIpMonitorContext context)
+        public DashboardLogic(HmIpMonitorContext context, IDeviceLogic deviceLogic)
         {
             _context = context;
+            _deviceLogic = deviceLogic;
         }
 
         public Dashboard SaveOrUpdate(long id, string title, List<long> parameterIds)
@@ -61,6 +64,14 @@ namespace HmIpMonitor.Logic
         public Dashboard Load(long id)
         {
             return _context.Dashboards.First(x => x.Id == id);
+        }
+
+        public List<CcuValueDto> GetAllValues(long id)
+        {
+            var dashboard = _context.Dashboards.First(x => x.Id == id);
+            var deviceIds = dashboard.DashboardDeviceParameters.Select(x => x.DeviceParameter.DeviceId).ToList();
+            var parameterIds = dashboard.DashboardDeviceParameters.Select(x => x.DeviceParameterId).ToList();
+            return _deviceLogic.LoadValues(deviceIds, parameterIds);
         }
     }
 }

@@ -12,7 +12,9 @@
     @foreach (var d in Model)
     {
         <tr>
-            <td>@d.Title</td><td>@d.DashboardDeviceParameters.Count</td><td>@Html.ActionLink("Delete", "Delete", new { d.Id }) | @Html.ActionLink("Edit", "Edit", new { d.Id })</td>
+            <td>@d.Title</td><td>@d.DashboardDeviceParameters.Count</td><td>@Html.ActionLink("Delete", "Delete", new { d.Id }) | 
+                @Html.ActionLink("Edit", "Edit", new { d.Id }) |
+                @Html.ActionLink("Details", "Details", new { Id = d.Id })</td>
         </tr>
     }
 </table>

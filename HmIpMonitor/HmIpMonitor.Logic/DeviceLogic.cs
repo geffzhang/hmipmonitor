@@ -70,6 +70,31 @@ namespace HmIpMonitor.Logic
             return ctx.Devices.Include(x => x.DeviceParameter).ToList();
         }
 
+        public List<CcuValueDto> LoadValues(List<string> deviceIds, List<long> parameterIds)
+        {
+            var devices = ctx.Devices.Where(d => deviceIds.Contains(d.Id)).ToList();
+            return devices.SelectMany(d =>
+            {
+                return d.DeviceParameter.Where(dp => parameterIds.Contains(dp.Id)).Select(dp =>
+                {
+                    var ccuData = ccuApi.GetDataFor(dp.DeviceId, dp.Channel, dp.Parameter);
+
+                    if (ccuData != null)
+                    {
+                        var retVal = new CcuValueDto();
+                        retVal.PopulateFrom(ccuData);
+                        retVal.DeviceId = d.Id;
+                        retVal.DeviceName = GetDeviceData(d.Id)?.Title;
+                        retVal.DeviceParameterId = dp.Id;
+                        retVal.ParameterName = dp.Parameter;
+                        return retVal;
+                    }
+
+                    return null as CcuValueDto;
+                });
+            }).Where(x => x != null).ToList();
+        }
+
         public List<CcuValueDto> GetAllValues()
         {
             var devices = GetAll();

@@ -1,0 +1,13 @@
+﻿@model List<HmIpMonitor.Contracts.CcuValueDto>
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    @foreach (var d in Model)
+    {
+        <tr><td>@d.DeviceName</td><td>@d.ParameterName</td><td>@d.V</td></tr>
+    }
+</table>

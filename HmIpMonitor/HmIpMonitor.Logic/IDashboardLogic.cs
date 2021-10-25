@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HmIpMonitor.Contracts;
 using HmIpMonitor.EntityFramework.Models;
 
 namespace HmIpMonitor.Logic
@@ -9,5 +10,6 @@ namespace HmIpMonitor.Logic
         List<Dashboard> LoadAll();
         void Delete(long id);
         Dashboard Load(long id);
+        List<CcuValueDto> GetAllValues(long id);
     }
 }

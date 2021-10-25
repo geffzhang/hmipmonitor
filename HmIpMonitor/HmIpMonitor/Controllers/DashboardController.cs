@@ -21,15 +21,28 @@ namespace HmIpMonitor.Controllers
             _dashboardLogic = dashboardLogic;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(long id = 0)
         {
-            return View(_dashboardLogic.LoadAll());
+            if (id == 0)
+            {
+                return View(_dashboardLogic.LoadAll());
+            }
+            else
+            {
+                return RedirectToAction("Details", new { Id = id });
+            }
         }
 
         [HttpGet]
         public IActionResult Create(long id = 0)
         {
             return View(GetDashboardModel(id));
+        }
+
+        [HttpGet]
+        public IActionResult Details(long id)
+        {
+            return View(_dashboardLogic.GetAllValues(id));
         }
 
         [HttpPost]
