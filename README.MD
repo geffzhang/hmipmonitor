@@ -1,0 +1,1 @@
+[![Build Status](https://drone.biehler-josef.de/api/badges/gabbersepp/hmipmonitor/status.svg)](https://drone.biehler-josef.de/gabbersepp/hmipmonitor)
