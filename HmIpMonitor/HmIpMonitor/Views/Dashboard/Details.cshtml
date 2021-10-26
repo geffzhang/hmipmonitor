@@ -1,54 +1,24 @@
-﻿@using HmIpMonitor.Contracts
-@model List<HmIpMonitor.Contracts.CcuValueDto>
+﻿@model long
 @{
     ViewData["Title"] = "Details";
 }
 
-@functions {
 
-    string GetGroupClass(CcuValueDto value)
-    {
-        if (value.DeviceParameter.ValueThresholdDirectionRight)
-        {
-            if (value.DeviceParameter.ValueErrorThreshold < value.V)
-            {
-                return "error";
-            }
-
-            if (value.DeviceParameter.ValueWarnThreshold < value.V)
-            {
-                return "warn";
-            }
-        }
-        else
-        {
-            if (value.DeviceParameter.ValueErrorThreshold > value.V)
-            {
-                return "error";
-            }
-
-            if (value.DeviceParameter.ValueWarnThreshold > value.V)
-            {
-                return "warn";
-            }
-        }
-
-        return string.Empty;
-    }
-
-}
 
 <h1>@ViewData["Title"]</h1>
 
 <div class="parameter-main">
-    @foreach (var d in Model)
-    {
-        <div class="parameter-group @GetGroupClass(d)">
-            <div class="device">@d.DeviceName</div>
-            <div class="parameter">@d.DeviceParameter.Parameter</div>
-            <div class="divider @GetGroupClass(d)"></div>
-            <div class="value">@d.V</div>
-        </div>
-    }
 
 </div>
+
+@section scripts{
+    <script>
+        function load() {
+            $(".parameter-main").load("/Dashboard/CarPartial/@Model")
+        }
+        $(function () {
+            setInterval(load, 5000);
+        });
+        load();
+    </script>
+}

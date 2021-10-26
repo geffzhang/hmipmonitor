@@ -1,0 +1,46 @@
+﻿@using HmIpMonitor.Contracts
+@model List<HmIpMonitor.Contracts.CcuValueDto>
+
+@functions {
+
+    string GetGroupClass(CcuValueDto value)
+    {
+        if (value.DeviceParameter.ValueThresholdDirectionRight)
+        {
+            if (value.DeviceParameter.ValueErrorThreshold < value.V)
+            {
+                return "error";
+            }
+
+            if (value.DeviceParameter.ValueWarnThreshold < value.V)
+            {
+                return "warn";
+            }
+        }
+        else
+        {
+            if (value.DeviceParameter.ValueErrorThreshold > value.V)
+            {
+                return "error";
+            }
+
+            if (value.DeviceParameter.ValueWarnThreshold > value.V)
+            {
+                return "warn";
+            }
+        }
+
+        return string.Empty;
+    }
+
+}
+
+@foreach (var d in Model)
+{
+    <div class="parameter-group @GetGroupClass(d)">
+        <div class="device">@d.DeviceName</div>
+        <div class="parameter">@d.DeviceParameter.Parameter</div>
+        <div class="divider @GetGroupClass(d)"></div>
+        <div class="value">@d.V</div>
+    </div>
+}

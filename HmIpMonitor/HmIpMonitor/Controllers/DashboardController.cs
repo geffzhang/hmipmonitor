@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HmIpMonitor.Contracts;
 using HmIpMonitor.EntityFramework.Models;
 using HmIpMonitor.Logic;
 using HmIpMonitor.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace HmIpMonitor.Controllers
 {
@@ -42,7 +44,17 @@ namespace HmIpMonitor.Controllers
         [HttpGet]
         public IActionResult Details(long id)
         {
-            return View(_dashboardLogic.GetAllValues(id));
+            return View(id);
+        }
+
+        [HttpGet]
+        public PartialViewResult CarPartial(long id)
+        {
+            return new PartialViewResult
+            {
+                ViewName = "_DashboardDetailsPartial",
+                ViewData = new ViewDataDictionary<List<CcuValueDto>>(ViewData, _dashboardLogic.GetAllValues(id))
+            };
         }
 
         [HttpPost]
