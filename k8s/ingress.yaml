@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hmipmonitor-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: hmip.h5b.de
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hmipmonitor-service
+          servicePort: 80
+  - host: www.hmip.h5b.de
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hmipmonitor-service
+          servicePort: 80

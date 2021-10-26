@@ -1,0 +1,38 @@
+kind: pipeline
+type: kubernetes
+name: hmipmonitor
+steps:
+- name: docker
+  image: plugins/docker
+  settings:
+    registry: ghcr.io
+    repo: ghcr.io/gabbersepp/hmipmonitor
+    password:
+      from_secret: ghcrio_accesstoken
+    username: gabbersepp
+  when:
+    branch:
+    - master
+    event:
+    - push
+
+- name: deploy
+  image: gabbersepp/drone-kubectl
+  pull: always
+  settings:
+    kubernetes_server: https://192.168.2.126:6443
+    kubernetes_token:
+      from_secret: k8s_token
+    kubernetes_cert:
+      from_secret: k8s_cert
+    kubernetes_user: deploy
+  commands:
+    - kubectl delete deployment hmipmonitor -n default
+    - kubectl apply -f k8s/deployment.yaml -n default
+    - kubectl apply -f k8s/service.yaml -n default
+    - kubectl apply -f k8s/ingress.yaml -n default
+  when:
+    branch:
+    - master
+    event:
+    - push

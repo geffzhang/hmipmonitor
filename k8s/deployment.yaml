@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hmipmonitor
+spec:
+  selector:
+    matchLabels:
+      app: hmipmonitor
+  template:
+    metadata:
+      labels:
+        app: hmipmonitor
+    spec:
+      containers:
+      - name: hmipmonitor
+        image: ghcr.io/gabbersepp/hmipmonitor
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: ghcrio
