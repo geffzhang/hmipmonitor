@@ -27,6 +27,7 @@ steps:
       from_secret: k8s_cert
     kubernetes_user: deploy
   commands:
+    - kubectl delete deployment hmipmonitor -n default
     - kubectl apply -f k8s/deployment.yaml -n default
     - kubectl apply -f k8s/service.yaml -n default
     - kubectl apply -f k8s/ingress.yaml -n default
