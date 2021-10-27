@@ -28,7 +28,7 @@ namespace HmIpMonitor.Logic
             {
                 var client = new HttpClient();
                 var data = client.GetFromJsonAsync<T>(
-                    $"http://ccu3-webui.speedport.ip:2121/device/{deviceId}/{partialUrl ?? string.Empty}");
+                    $"http://192.168.2.145:2121/device/{deviceId}/{partialUrl ?? string.Empty}");
                 var result = data.Result;
                 return result;
             }
