@@ -13,12 +13,19 @@
 
 @section scripts{
     <script>
-        function load() {
-            $(".parameter-main").load("/Dashboard/CarPartial/@Model")
+        async function load() {
+            while (true) {
+                try {
+                    await $(".parameter-main").load("/Dashboard/CarPartial/@Model");
+                    await new Promise(resolve => {
+                        setTimeout(resolve, 5000)
+                    });
+                } catch (e) {
+                    console.error(e);
+                }
+            }
         }
-        $(function () {
-            setInterval(load, 5000);
-        });
+
         load();
     </script>
 }

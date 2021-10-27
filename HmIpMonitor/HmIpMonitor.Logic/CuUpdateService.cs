@@ -25,7 +25,7 @@ namespace HmIpMonitor.Logic
                 {
                     try
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(10000);
                         using var scope = serviceProvider.CreateScope();
                         var ccuUpdateService = scope.ServiceProvider.GetService<ICcuUpdateService>();
                         ccuUpdateService.Execute();
