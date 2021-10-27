@@ -39,23 +39,28 @@ namespace HmIpMonitor.Controllers
         [HttpGet]
         public ActionResult Create(int id = 0)
         {
-            DeviceParameter dp = _deviceLogic.GetDeviceParameter(id);
-            var deviceData = _deviceLogic.GetDeviceData(dp.DeviceId);
-            var model = new CreateDeviceParameterModel().PopulateFrom(dp);
-            model.DeviceName = deviceData.Title;
-            return View(model);
+            if (id > 0)
+            {
+                DeviceParameter dp = _deviceLogic.GetDeviceParameter(id);
+                var deviceData = _deviceLogic.GetDeviceData(dp.DeviceId);
+                var model = new CreateDeviceParameterModel().PopulateFrom(dp);
+                model.DeviceName = deviceData.Title;
+                return View(model);
+            }
+
+            return View(new CreateDeviceParameterModel());
         }
 
         [HttpPost]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CreateDeviceParameterModel data)
         {
             DeviceParameter dp = new DeviceParameter();
-            dp.DeviceId = collection["DeviceId"];
-            dp.Channel = collection["Channel"];
-            dp.Parameter = collection["Parameter"];
-            dp.ValueErrorThreshold = double.TryParse(collection["ValueErrorThreshold"], out var errorThreshold) ? errorThreshold : 0;
-            dp.ValueWarnThreshold = double.TryParse(collection["ValueWarnThreshold"], out var warnThreshold) ? warnThreshold : 0;
-            dp.ValueThresholdDirectionRight = bool.TryParse(collection["ValueThresholdDirectionRight"], out var direction) ? direction : true;
+            dp.DeviceId = data.DeviceId;
+            dp.Channel = data.Channel;
+            dp.Parameter = data.Parameter;
+            dp.ValueErrorThreshold = data.ValueErrorThreshold;
+            dp.ValueWarnThreshold = data.ValueWarnThreshold;
+            dp.ValueThresholdDirectionRight = data.ValueThresholdDirectionRight;
             _deviceLogic.SaveOrUpdateDevice(dp);
             return RedirectToAction("Index");
         }
