@@ -5,26 +5,34 @@
 
     string GetGroupClass(CcuValueDto value)
     {
+        var errorThreshold = value.DeviceParameter.ValueErrorThreshold;
+        var warnThreshold = value.DeviceParameter.ValueWarnThreshold;
+
+        if (Math.Abs(errorThreshold - warnThreshold) < 0.1)
+        {
+            return string.Empty;
+        }
+
         if (value.DeviceParameter.ValueThresholdDirectionRight)
         {
-            if (value.DeviceParameter.ValueErrorThreshold < value.V)
+            if (errorThreshold < value.V)
             {
                 return "error";
             }
 
-            if (value.DeviceParameter.ValueWarnThreshold < value.V)
+            if (warnThreshold < value.V)
             {
                 return "warn";
             }
         }
         else
         {
-            if (value.DeviceParameter.ValueErrorThreshold > value.V)
+            if (errorThreshold > value.V)
             {
                 return "error";
             }
 
-            if (value.DeviceParameter.ValueWarnThreshold > value.V)
+            if (warnThreshold > value.V)
             {
                 return "warn";
             }
