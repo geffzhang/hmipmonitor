@@ -60,7 +60,7 @@ namespace HmIpMonitor.Controllers
         [HttpPost]
         public IActionResult Create(CreateEditDashboardModel model)
         {
-            _dashboardLogic.SaveOrUpdate(model.Id, model.Title, model.DeviceParameters.Where(x => x.Active).Select(x => x.Id).ToList());
+            _dashboardLogic.SaveOrUpdate(model.Id, model.Title, model.DeviceParameters.SelectMany(x => x.Parameters.Where(x => x.Active)).Select(x => x.Id).ToList());
             return RedirectToAction("Index");
         }
 
@@ -89,19 +89,23 @@ namespace HmIpMonitor.Controllers
                 dashboard.Title = dbDashboard.Title;
             }
 
-            var parameters = _deviceLogic.GetAll().SelectMany(d =>
+            var parameters = _deviceLogic.GetAll().Select(d =>
             {
                 var deviceName = _deviceLogic.GetDeviceData(d.Id).Title;
-                return d.DeviceParameter.Select(dp =>
+                return new CreateEditDashboardDeviceModel
                 {
-                    return new CreateEditDashboardDeviceParameterModel
+                    Title = deviceName,
+                    Parameters = d.DeviceParameter.Select(dp =>
                     {
-                        Title = deviceName,
-                        Parameter = dp.Parameter,
-                        Active = dbDashboard?.DashboardDeviceParameters.Any(x => x.DeviceParameterId == dp.Id) ?? false,
-                        Id = dp.Id
-                    };
-                });
+                        return new CreateEditDashboardDeviceParameterModel
+                        {
+                            Parameter = dp.Parameter,
+                            Active = dbDashboard?.DashboardDeviceParameters.Any(x => x.DeviceParameterId == dp.Id) ??
+                                     false,
+                            Id = dp.Id
+                        };
+                    }).ToList()
+                };
             }).ToList();
 
             dashboard.DeviceParameters = parameters;

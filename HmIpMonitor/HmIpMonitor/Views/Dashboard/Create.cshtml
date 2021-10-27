@@ -19,16 +19,26 @@
     </div>
     <hr />
     
-    <div class="parameters-selection">
+    <table class="table">
         @for (var pIndex = 0; pIndex < Model.DeviceParameters.Count; pIndex++)
         {
-            <div class="device-group">
-                <div>@Model.DeviceParameters[pIndex].Title</div>
-                <div>@Model.DeviceParameters[pIndex].Parameter</div>
-                <div>@Html.CheckBoxFor(x => x.DeviceParameters[pIndex].Active) @Html.HiddenFor(x => x.DeviceParameters[pIndex].Id)</div>
-            </div>
+            <tr>
+                <td>@Model.DeviceParameters[pIndex].Title</td>
+                <td>
+                    <table class="table">
+                        @for (var dpIndex = 0; dpIndex < Model.DeviceParameters[pIndex].Parameters.Count; dpIndex++)
+                        {
+                            <tr>
+                                <td>@Model.DeviceParameters[pIndex].Parameters[dpIndex].Parameter</td>
+                                <td>@Html.CheckBoxFor(x => x.DeviceParameters[pIndex].Parameters[dpIndex].Active) 
+                                    @Html.HiddenFor(x => x.DeviceParameters[pIndex].Parameters[dpIndex].Id)</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
         }
-    </div>
+    </table>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Create" class="btn btn-default" />

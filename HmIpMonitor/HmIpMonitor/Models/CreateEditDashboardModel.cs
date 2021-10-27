@@ -7,6 +7,6 @@ namespace HmIpMonitor.Models
         public long Id { get; set; }
         public string Title { get; set; }
         // contains all deviceparameters from database, ordered by deviceid
-        public List<CreateEditDashboardDeviceParameterModel> DeviceParameters { get; set; }
+        public List<CreateEditDashboardDeviceModel> DeviceParameters { get; set; }
     }
 }
