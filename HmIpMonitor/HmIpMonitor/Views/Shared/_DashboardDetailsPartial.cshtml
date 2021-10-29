@@ -46,8 +46,8 @@
 @foreach (var d in Model)
 {
     <div class="parameter-group @GetGroupClass(d)">
-        <div class="device">@d.DeviceName</div>
-        <div class="parameter">@d.DeviceParameter.Parameter</div>
+        <div class="device" title="@d.DeviceName">@d.DeviceName</div>
+        <div class="parameter" title="@d.DeviceParameter.Parameter">@d.DeviceParameter.Parameter</div>
         <div class="divider @GetGroupClass(d)"></div>
         <div class="value">@d.V</div>
     </div>
