@@ -21,7 +21,7 @@ spec:
         - name: diagnostics
           mountPath: /tmp
       - name: monitor-sidecar
-        image: mcr.microsoft.com/dotnet/monitor:5.0.0-preview.7-alpine
+        image: mcr.microsoft.com/dotnet/monitor:6.0.0
         env:
           - name: DotnetMonitor_Metrics__Enabled
             value: "false"
